@@ -116,7 +116,7 @@ func main() {
 		}
 
 		if *format == "mermaid" {
-      printMermaidNode(pkg, pkgId, pkgName)
+			printMermaidNode(pkg, pkgId, pkgName)
 		} else {
 			printGraphvizNode(pkg, pkgId, pkgName)
 		}
