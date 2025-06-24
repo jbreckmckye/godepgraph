@@ -29,7 +29,6 @@ func (p *mermaidPrinter) writeHeader(hLayout bool) {
 	fmt.Println("classDef cgofiles fill:#D52,color:white")
 	fmt.Println("classDef vendored fill:#D90,color:white")
 	fmt.Println("classDef buildErrs fill:#C10,color:white")
-	fmt.Println()
 }
 
 func (p *mermaidPrinter) writeNode(pkgName string, attrs *build.Package) {
@@ -47,14 +46,13 @@ func (p *mermaidPrinter) writeNode(pkgName string, attrs *build.Package) {
 		classname = "buildErrs"
 	}
 
+	fmt.Println()
 	fmt.Printf("%s[%s]\n", id, pkgName)
 	fmt.Printf("click %s href %q\n", id, pkgDocsURL(pkgName))
 
 	if classname != "" {
 		fmt.Printf("class %s %s\n", id, classname)
 	}
-
-	fmt.Println()
 }
 
 func (p *mermaidPrinter) writeEdge(u string, v string) {

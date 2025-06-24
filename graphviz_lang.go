@@ -46,7 +46,6 @@ func (p *graphvizPrinter) writeNode(pkgName string, attrs *build.Package) {
 	}
 
 	fmt.Printf("%s [label=\"%s\" color=\"%s\" URL=\"%s\" target=\"_blank\"];\n", id, pkgName, color, pkgDocsURL(pkgName))
-
 }
 
 func (p *graphvizPrinter) writeEdge(u string, v string) {
