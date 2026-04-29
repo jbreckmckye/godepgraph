@@ -20,6 +20,7 @@ type graphPrinter interface {
 var (
 	pkgs        map[string]*build.Package
 	erroredPkgs map[string]bool
+	entrypoints map[*build.Package]bool
 
 	ignored = map[string]bool{
 		"C": true,
@@ -57,6 +58,7 @@ func init() {
 func main() {
 	pkgs = make(map[string]*build.Package)
 	erroredPkgs = make(map[string]bool)
+	entrypoints = make(map[*build.Package]bool)
 	flag.Parse()
 
 	args := flag.Args()
@@ -151,6 +153,11 @@ func processPackage(root string, pkgName string, level int, importedBy string, s
 		}
 	}
 
+	// Track entry points so they aren't ignored
+	if importedBy == "" {
+		entrypoints[pkg] = true
+	}
+
 	if isIgnored(pkg) {
 		return nil
 	}
@@ -209,6 +216,10 @@ func hasPrefixes(s string, prefixes []string) bool {
 }
 
 func isIgnored(pkg *build.Package) bool {
+	if entrypoints[pkg] {
+		return false
+	}
+
 	if len(onlyPrefixes) > 0 && !hasPrefixes(normalizeVendor(pkg.ImportPath), onlyPrefixes) {
 		return true
 	}
